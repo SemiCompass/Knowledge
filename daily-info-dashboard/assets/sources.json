@@ -1,0 +1,119 @@
+{
+  "_説明": "adapters = ソースの種類ごとの定義（ここに足すだけで新しいソースを扱える）。sources = 実際に使うソース。詳細は references/source-adapters.md。",
+  "version": 1,
+  "adapters": {
+    "outlook-calendar": {
+      "label": "Outlook予定表",
+      "connector": "Microsoft 365",
+      "default_kind": "meeting",
+      "multi": false,
+      "carry": false,
+      "closed_statuses": ["cancelled", "canceled", "キャンセル"],
+      "fetch": "今日0:00から翌営業日24:00までの自分の予定を取得する。辞退済み・終日の私用予定は除く。",
+      "map": {
+        "id": "予定ID",
+        "title": "件名",
+        "due": "開始日時（ISO 8601）",
+        "url": "予定のWebリンク",
+        "status": "accepted / tentative / cancelled など",
+        "self": "主催者なら owner、出席者なら attendee",
+        "people": "主催者と主要出席者の表示名",
+        "summary": "本文の冒頭やアジェンダを120字以内で"
+      }
+    },
+    "outlook-mail": {
+      "label": "Outlookメール",
+      "connector": "Microsoft 365",
+      "default_kind": "mail",
+      "multi": false,
+      "carry": true,
+      "closed_statuses": ["replied", "done", "completed", "返信済み", "完了"],
+      "fetch": "受信トレイの直近24時間（月曜は金曜0:00以降）のメールのうち、未読・フラグ付き・自分がTo宛先のものを取得する。ニュースレターや自動通知は除く。",
+      "map": {
+        "id": "メッセージID",
+        "title": "件名",
+        "updated": "受信日時",
+        "url": "メールのWebリンク",
+        "status": "unread / read / flagged / replied",
+        "self": "To宛先なら to、CCなら cc",
+        "people": "差出人の表示名",
+        "summary": "本文の要点を120字以内で",
+        "action": "自分に求められている行動が本文に明記されていればその内容（なければ省略）",
+        "due": "本文に期限の明記があればその日付"
+      }
+    },
+    "teams-chat": {
+      "label": "Teamsチャット",
+      "connector": "Microsoft 365",
+      "default_kind": "chat",
+      "multi": false,
+      "carry": true,
+      "closed_statuses": ["replied", "done", "返信済み"],
+      "fetch": "直近24時間のTeamsチャット・チャネル投稿のうち、自分へのメンション、1対1チャット、自分が参加するグループチャットを取得する。スレッド単位で1レコードにまとめる。",
+      "map": {
+        "id": "チャットID＋スレッド（最初のメッセージ）ID",
+        "title": "チャット名またはスレッドの1行目",
+        "updated": "最新メッセージの日時",
+        "url": "メッセージへのリンク",
+        "status": "最後の発言が自分なら replied、相手なら open",
+        "self": "メンションなら mentioned、1対1なら direct、それ以外は member",
+        "people": "発言者の表示名",
+        "summary": "やりとりの要点を120字以内で",
+        "action": "自分への依頼が明記されていればその内容",
+        "waiting_on": "自分が質問・依頼して相手が未回答なら相手の名前"
+      }
+    },
+    "jira": {
+      "label": "JIRA",
+      "connector": "Atlassian",
+      "default_kind": "task",
+      "multi": true,
+      "id_prefix": "jira-",
+      "carry": true,
+      "closed_statuses": ["done", "closed", "resolved", "完了", "クローズ", "解決済み", "却下", "won't do"],
+      "fetch": "基本JQL『(assignee = currentUser() OR reporter = currentUser() OR watcher = currentUser()) AND (statusCategory != Done OR updated >= -1d) ORDER BY updated DESC』を実行（最大50件）。params.extra_jql があれば別クエリとして実行し、課題キーで重複を除いて合わせる。",
+      "map": {
+        "id": "課題キー（例 ABC-123）",
+        "title": "要約（summary）",
+        "url": "課題のブラウズURL",
+        "status": "ステータス名",
+        "self": "担当者なら owner、報告者なら reporter、ウォッチのみなら watcher",
+        "due": "期限日",
+        "updated": "更新日時",
+        "priority": "優先度名",
+        "tags": "ラベルとコンポーネント",
+        "people": "担当者・報告者の表示名",
+        "summary": "説明または最新コメントの要点を120字以内で",
+        "waiting_on": "ステータスが『確認待ち』等で他者の対応待ちならその人の名前"
+      }
+    },
+    "confluence": {
+      "label": "Confluence",
+      "connector": "Atlassian",
+      "default_kind": "page",
+      "multi": true,
+      "id_prefix": "confluence-",
+      "carry": false,
+      "closed_statuses": [],
+      "fetch": "CQL『space in (<params.spaces>) AND lastmodified >= now(\"-1d\") ORDER BY lastmodified DESC』（最大30件）と『mention = currentUser() AND lastmodified >= now(\"-7d\")』を実行し、ページIDで重複を除いて合わせる。",
+      "map": {
+        "id": "ページID",
+        "title": "ページタイトル",
+        "url": "ページURL",
+        "updated": "最終更新日時",
+        "self": "自分がメンションされていれば mentioned、作成者なら owner",
+        "people": "最終更新者の表示名",
+        "tags": "スペースキーとラベル",
+        "summary": "更新内容の要点を120字以内で",
+        "action": "メンション付きで依頼が明記されていればその内容"
+      }
+    }
+  },
+  "sources": [
+    { "id": "outlook-calendar", "adapter": "outlook-calendar", "enabled": true, "params": {} },
+    { "id": "outlook-mail", "adapter": "outlook-mail", "enabled": true, "params": {} },
+    { "id": "teams-chat", "adapter": "teams-chat", "enabled": true, "params": {} },
+    { "id": "jira-{{JIRA_SLUG}}", "adapter": "jira", "enabled": true, "params": { "site": "{{JIRA_SITE}}", "extra_jql": "{{JIRA_EXTRA_JQL}}" } },
+    { "id": "confluence-{{CONFLUENCE_SLUG}}", "adapter": "confluence", "enabled": true, "params": { "site": "{{CONFLUENCE_SITE}}", "spaces": ["{{CONFLUENCE_SPACE_KEYS}}"] } }
+  ]
+}

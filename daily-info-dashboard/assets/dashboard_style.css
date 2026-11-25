@@ -1,0 +1,156 @@
+/* =========================================================
+   dashboard_style.css ― デイリー／週次の見た目
+   色はすべてこの先頭の変数で決まります。配色を変えるときは変数だけを直してください。
+   外部フォント・画像は使いません（オフラインで表示できるように）。
+   ========================================================= */
+
+/* ── 配色（ライト） ── */
+:root {
+  --bg: #f6f7f9;          /* ページの背景 */
+  --panel: #ffffff;       /* カードの背景 */
+  --text: #1d2330;        /* 本文 */
+  --muted: #667085;       /* 補足文字 */
+  --line: #e3e6eb;        /* 区切り線 */
+  --accent: #2f5fd0;      /* リンク・強調 */
+  --accent-soft: #e8eefc; /* 強調の薄い背景 */
+  --warn: #b42318;        /* 期限超過・失敗 */
+  --warn-soft: #fdecea;
+  --caution: #a15c00;     /* 注意・0件 */
+  --caution-soft: #fff4e0;
+  --ok: #1f7a4d;          /* 正常 */
+  --ok-soft: #e6f4ec;
+  --done-opacity: 0.45;   /* 済みにした項目の薄さ */
+  --radius: 10px;
+  --gap: 14px;
+  --font: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+}
+
+/* ── 配色（ダーク）: テーマ切り替えボタン、または OS の設定で使われます ── */
+:root[data-theme="dark"] {
+  --bg: #12151b;
+  --panel: #1b2029;
+  --text: #e6e9ef;
+  --muted: #9aa3b2;
+  --line: #2c3340;
+  --accent: #8fb0ff;
+  --accent-soft: #22304d;
+  --warn: #ff8a80;
+  --warn-soft: #3a2024;
+  --caution: #f5b75b;
+  --caution-soft: #3a2f1c;
+  --ok: #6fd3a0;
+  --ok-soft: #1c3329;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12151b; --panel: #1b2029; --text: #e6e9ef; --muted: #9aa3b2; --line: #2c3340;
+    --accent: #8fb0ff; --accent-soft: #22304d; --warn: #ff8a80; --warn-soft: #3a2024;
+    --caution: #f5b75b; --caution-soft: #3a2f1c; --ok: #6fd3a0; --ok-soft: #1c3329;
+  }
+}
+
+/* ── 全体 ── */
+* { box-sizing: border-box; }
+body {
+  margin: 0 auto;
+  max-width: 980px;
+  padding: 20px 16px 40px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 { font-size: 20px; margin: 0; }
+h2 { font-size: 15px; margin: 0 0 8px; }
+
+/* ── ヘッダー ── */
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--gap); margin-bottom: var(--gap); }
+.sub { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.ghost { background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; color: var(--muted); }
+
+/* ── カード ── */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: var(--gap);
+}
+
+/* ── 今日の見立て ── */
+.insight { border-left: 4px solid var(--accent); }
+.insight-list { margin: 0; padding-left: 1.4em; }
+.insight-list li { margin: 4px 0; }
+.insight-text { display: block; }
+.basis { display: block; font-size: 12px; color: var(--muted); }
+
+/* ── 取得状況 ── */
+.src-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.src { font-size: 13px; padding: 3px 10px; border-radius: 999px; }
+.src.ok { background: var(--ok-soft); color: var(--ok); }
+.src.empty { background: var(--caution-soft); color: var(--caution); }
+.src.error, .src.warn { background: var(--warn-soft); color: var(--warn); }
+
+/* ── 絞り込みバー ── */
+.toolbar {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  padding: 8px 0; margin-bottom: 6px; background: var(--bg);
+}
+#q { flex: 1 1 220px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--text); font: inherit; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 2px 10px; font-size: 13px; }
+.chip.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.switch { font-size: 13px; color: var(--muted); white-space: nowrap; }
+
+/* ── 区分の見出し（折りたたみボタン） ── */
+.collapse { background: none; border: 0; padding: 0; font-weight: 700; display: flex; gap: 8px; align-items: center; }
+.collapse::before { content: "▾"; color: var(--muted); }
+.panel.folded .collapse::before { content: "▸"; }
+.panel.folded .items { display: none; }
+.count { font-size: 12px; font-weight: 400; color: var(--muted); background: var(--bg); border-radius: 999px; padding: 0 8px; }
+
+/* ── 各項目 ── */
+.items { list-style: none; margin: 0; padding: 0; }
+.item { display: flex; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+.item:first-child { border-top: 0; }
+.item.done { opacity: var(--done-opacity); }
+.item.done .item-title { text-decoration: line-through; }
+.item.hidden { display: none; }
+.done-toggle { padding-top: 2px; }
+.item-body { min-width: 0; flex: 1; }
+.item-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
+.item-title { font-weight: 600; overflow-wrap: anywhere; }
+.item-meta { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.item-action { margin: 4px 0 0; font-size: 13.5px; }
+.item-action::before { content: "対応: "; color: var(--accent); font-weight: 700; }
+.item-summary { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+.empty-note { color: var(--muted); font-size: 13px; padding: 6px 0; }
+.due.overdue { color: var(--warn); font-weight: 700; }
+.due.today { color: var(--caution); font-weight: 700; }
+
+/* ── バッジとタグ ── */
+.badge { font-size: 11.5px; padding: 0 7px; border-radius: 4px; background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+.badge.warn { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+.badge.accent { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.badge.muted { font-style: italic; }
+.tag { font-size: 12px; color: var(--accent); }
+
+/* ── 週次まとめ ── */
+.weekly h1 { margin-bottom: 8px; }
+.weekly h2 { margin-top: 18px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.weekly table { border-collapse: collapse; width: 100%; font-size: 14px; }
+.weekly th, .weekly td { border: 1px solid var(--line); padding: 4px 8px; text-align: left; }
+
+.foot { color: var(--muted); font-size: 12px; text-align: center; margin-top: 24px; }
+
+/* ── 印刷 ── */
+@media print {
+  .toolbar, .done-toggle, #theme-toggle { display: none; }
+  .panel.folded .items { display: block; }
+  body { background: #fff; }
+}
