@@ -1,10 +1,10 @@
 # 自作スキル集
 
-Claude 用の自作スキルを置くリポジトリです。フォルダ1つが1スキルです。
+Claude 用の自作スキルを置くリポジトリです。スキルは `Skills/` の中に、フォルダ1つが1スキルで入っています。
 
 | スキル | 内容 |
 |---|---|
-| [daily-info-dashboard](daily-info-dashboard/) | Outlook・Teams・JIRA・Confluence から自分専用のデイリー情報ダッシュボードと週次まとめを作る定期タスク2本を登録・実行する |
+| [daily-info-dashboard](Skills/daily-info-dashboard/) | Outlook・Teams・JIRA・Confluence から自分専用のデイリー情報ダッシュボードと週次まとめを作る定期タスク2本を登録・実行する |
 
 ## 使い方（GitHub からダウンロード → ローカルの Claude に入れる → セットアップ）
 
@@ -15,12 +15,12 @@ Claude 用の自作スキルを置くリポジトリです。フォルダ1つが
 
 ### 2. ローカルの Claude に入れる
 
-スキルは **`SKILL.md` があるフォルダ単位**で入れます（例 `daily-info-dashboard/`）。
+スキルは **`SKILL.md` があるフォルダ単位**で入れます（例 `Skills/daily-info-dashboard/`）。
 `assets/` と `references/` も一緒に入れてください（スクリプト類が入っています）。
 
-* **Claude デスクトップアプリ**: スキルのフォルダ（例 `daily-info-dashboard`）だけを zip に圧縮し、
+* **Claude デスクトップアプリ**: `Skills/` の中のスキルのフォルダ（例 `daily-info-dashboard`）だけを zip に圧縮し、
   設定のスキル画面からアップロードする。zip の直下が `daily-info-dashboard/SKILL.md` になるようにする。
-* **Claude Code**: フォルダごと `~/.claude/skills/` にコピーする
+* **Claude Code**: `Skills/` の中のスキルのフォルダごと `~/.claude/skills/` にコピーする
   （`~/.claude/skills/daily-info-dashboard/SKILL.md` になればOK）。
 
 ### 3. セットアップ

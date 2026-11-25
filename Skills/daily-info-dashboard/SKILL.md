@@ -48,7 +48,7 @@ description: Outlook予定・メール・Teams・JIRA・Confluenceから自分�
 ```
 
 `assets/` が見当たらない場合（SKILL.md だけが登録されている場合）は、GitHub から取得する:
-`git clone https://github.com/SemiCompass/Knowledge.git` → `daily-info-dashboard/` を使う。
+`git clone https://github.com/SemiCompass/Knowledge.git` → `Skills/daily-info-dashboard/` を使う。
 
 ---
 
