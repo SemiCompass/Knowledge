@@ -1,12 +1,24 @@
-# 自作スキル集
+# Knowledge ― 仕事に役立つナレッジ集
 
-Claude 用の自作スキルを置くリポジトリです。スキルは `Skills/` の中に、フォルダ1つが1スキルで入っています。
+```
+Knowledge/
+├─ Skills/    Claude 用の自作スキル（フォルダ1つ＝1スキル）
+└─ Prompts/   プロンプト辞典（ファイル1つ＝1プロンプト）
+```
+
+## Skills
 
 | スキル | 内容 |
 |---|---|
 | [daily-info-dashboard](Skills/daily-info-dashboard/) | Outlook・Teams・JIRA・Confluence から自分専用のデイリー情報ダッシュボードと週次まとめを作る定期タスク2本を登録・実行する |
 
-## 使い方（GitHub からダウンロード → ローカルの Claude に入れる → セットアップ）
+## Prompts
+
+くり返し使うプロンプトの辞典です。一覧と追加のしかたは [Prompts/README.md](Prompts/README.md) を参照。
+
+---
+
+## スキルの使い方（GitHub からダウンロード → ローカルの Claude に入れる → セットアップ）
 
 ### 1. ダウンロード
 
